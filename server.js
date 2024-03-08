@@ -16,8 +16,6 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 const conn = process.env.MONGO_URL;
 mongoose.connect(conn);
-const userName = process.env.USER_NAME;
-const pass = process.env.PASSWORD;
 
 
 const inputSchema = new mongoose.Schema({
