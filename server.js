@@ -82,6 +82,30 @@ app.post('/update/:id',async (req, res) => {
   }
 });
 
+
+app.delete('/entries/:id', async (req, res) => {
+  try {
+      const deletedEntry = await InputData.findByIdAndDelete(req.params.id);
+      res.status(200).json({ message: 'Entry deleted successfully', deletedEntry });
+  } catch (error) {
+      res.status(500).json({ error: 'Error deleting entry' });
+  }
+});
+
+// API endpoint to handle duplicate request
+app.post('/entries/:id/duplicate', async (req, res) => {
+  try {
+      const originalEntry = await InputData.findById(req.params.id);
+      const duplicatedEntry = new InputData(originalEntry);
+      await duplicatedEntry.save();
+      res.status(201).json({ message: 'Entry duplicated successfully', duplicatedEntry });
+      console.log(req.params.id);
+  } catch (error) {
+      res.status(500).json({ error: 'Error duplicating entry' });
+  }
+});
+
+
 app.listen(port,()=>{
   console.log(`server runnig at ${port}`)
 })
