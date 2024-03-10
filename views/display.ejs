@@ -8,9 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="icon" href="logo.jpeg" style="border-radius: 25px;">
   <style>
-    .btn{
-      width: 80px;
-    }
+    
     body{
       background-color: rgb(242, 187, 115);
     }
@@ -51,6 +49,23 @@
 </head>
 <body>
   <h1 class="text-center"><i>Time Details</i></h1>
+  <div class="w-25 ms-5 mb-3">
+    <select class="form-select" id="monthDropdown" required >
+      <option selected disabled value="March">March</option>
+      <option value="January">January</option>
+      <option value="February">February</option>
+      <option value="March">March</option>
+      <option value="April">April</option>
+      <option value="May">May</option>
+      <option value="June">June</option>
+      <option value="July">July</option>
+      <option value="August">August</option>
+      <option value="September">September</option>
+      <option value="October">October</option>
+      <option value="November">November</option>
+      <option value="December">December</option>
+    </select>
+  </div>
     <div class="ms-5 d-flex">
       <!--<input type="checkbox" class="form-check-input me-5" id="paidCheckbox1" onchange="filterDocuments1()"> <b>All Paid Details</b>
       <input type="checkbox" class="form-check-input me-5" id="notPaidCheckbox1" onchange="filterDocuments1()"> <b>All Due Details</b>-->
@@ -63,7 +78,7 @@
       <input type="radio" name="radio-buttons" class="form-check-input me-1" id="HGC" onchange="HGC()"> <b class="me-3">HGC</b><br>
       <input type="radio" name="radio-buttons" class="form-check-input me-1" id="ASTA" onchange="ASTA()"> <b class="me-3">ASTA</b><br>
       <input type="radio" name="radio-buttons" class="form-check-input me-1" id="WIPRO" onchange="WIPRO()"> <b class="me-3">WIPRO</b><br>
-      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="RADIANT" onchange="RADIANT()"> <b class="me-3">RADIANT</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="RADIENT" onchange="RADIENT()"> <b class="me-3">RADIENT</b><br>
       <input type="radio" name="radio-buttons" class="form-check-input me-1" id="KAISA" onchange="KAISA()"> <b class="me-3">KAISA</b><br>
       <input type="radio" name="radio-buttons" class="form-check-input me-1" id="AITEK" onchange="AITEK()"> <b class="me-3">AITEK</b><br>
       <input type="radio" name="radio-buttons" class="form-check-input me-1" id="SONATA" onchange="SONATA()"> <b class="me-3">SONATA</b><br>
@@ -83,7 +98,9 @@
                 <p class="card-text me-3"><b><i>Paid By: </i></b><%= entry.paidBy %></p>
                 <p class="card-text me-3"><b><i>Payment Date: </i></b><%= entry.payDate %></p>
                 <p class="card-text me-3"><b><i>Remarks: </i></b><%= entry.remarks %></p>
-                <a><button onclick="enableEdit('<%= entry._id %>')" class="btn btn-primary"><b><i>Edit</i></b></button></a>
+                <a><button onclick="enableEdit('<%= entry._id %>')" class="btn btn-primary me-2 "><b><i>Edit</i></b></button></a>
+                <button onclick="deleteEntry('<%= entry._id %>')" class="btn btn-danger me-2"><b><i>Delete</i></b></button>
+                <button onclick="duplicateEntry('<%= entry._id %>')" class="btn btn-success me-2"><b><i>Duplicate</i></b></button>
               </div>
             </div>
           </div>
@@ -189,6 +206,26 @@
     }
     
     function kpmg() {
+          const kpmg = document.getElementById('KPMG');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (kpmg.checked && compName === "KPMG") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+        }
+    /*function kpmg() {
       const kpmg = document.getElementById('KPMG');
       const allDocuments = document.querySelectorAll('.row');
       allDocuments.forEach(document => {
@@ -200,163 +237,298 @@
           document.style.display = 'none';
         }
       });
-    }
+    }*/
     function RIZING() {
-      const rizing = document.getElementById('RIZING');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName1 = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((rizing.checked && compName1 === "RIZING")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+      const RIZING = document.getElementById('RIZING');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (RIZING.checked && compName === "RIZING") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function IC() {
-      const ic = document.getElementById('IC');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName2 = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((ic.checked && compName2 === "IC")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+      const IC = document.getElementById('IC');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (IC.checked && compName === "IC") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function ABEAM() {
-      const abeam = document.getElementById('ABEAM');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((abeam.checked && compName === "ABEAM")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+      const ABEAM = document.getElementById('ABEAM');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (ABEAM.checked && compName === "ABEAM") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function BIRLASOFT() {
       const BIRLASOFT = document.getElementById('BIRLASOFT');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((BIRLASOFT.checked && compName === "BIRLASOFT")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (BIRLASOFT.checked && compName === "BIRLASOFT") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function SYNLOG() {
       const SYNLOG = document.getElementById('SYNLOG');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((SYNLOG.checked && compName === "SYNLOG")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (SYNLOG.checked && compName === "SYNLOG") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function HGC() {
       const HGC = document.getElementById('HGC');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((HGC.checked && compName === "HGC")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (HGC.checked && compName === "HGC") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function ASTA() {
       const ASTA = document.getElementById('ASTA');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((ASTA.checked && compName === "ASTA")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (ASTA.checked && compName === "ASTA") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function WIPRO() {
       const WIPRO = document.getElementById('WIPRO');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((WIPRO.checked && compName === "WIPRO")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (WIPRO.checked && compName === "WIPRO") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
-    function RADIANT() {
-      const RADIANT = document.getElementById('RADIANT');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((RADIANT.checked && compName === "RADIANT")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+    function RADIENT() {
+      const RADIENT = document.getElementById('RADIENT');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (RADIENT.checked && compName === "RADIENT") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function KAISA() {
       const KAISA = document.getElementById('KAISA');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((KAISA.checked && compName === "KAISA")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (KAISA.checked && compName === "KAISA") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function AITEK() {
       const AITEK = document.getElementById('AITEK');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((AITEK.checked && compName === "AITEK")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (AITEK.checked && compName === "AITEK") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function SONATA() {
       const SONATA = document.getElementById('SONATA');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((SONATA.checked && compName === "SONATA")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (SONATA.checked && compName === "SONATA") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
     function INFOSYS() {
       const INFOSYS = document.getElementById('INFOSYS');
-      const allDocuments = document.querySelectorAll('.row');
-      allDocuments.forEach(document => {
-        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
-        if ((INFOSYS.checked && compName === "INFOSYS")) {
-          document.style.display = 'block';
-        } else {
-          document.style.display = 'none';
-        }
-      });
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (INFOSYS.checked && compName === "INFOSYS") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
     }
+</script>
+<script>
+  // Add JavaScript functions for delete and duplicate
+  async function deleteEntry(entryId) {
+      try {
+          const response = await fetch(`/entries/${entryId}`, {
+              method: 'DELETE',
+          });
+          const data = await response.json();
+          console.log(data.message);
+          window.location.reload();
+          // Refresh the page or update the UI as needed
+      } catch (error) {
+          console.error('Error deleting entry:', error);
+      }
+  }
+
+  async function duplicateEntry(entryId) {
+  try {
+    const response = await fetch(`/entries/${entryId}/duplicate`, {
+      method: 'POST',
+    });
+    const data = await response.json();
+    console.log(data.message);
+    //window.location.reload();
+    // Refresh the page or update the UI as needed
+  } catch (error) {
+    console.error('Error duplicating entry:', error);
+  }
+}
+
 </script>
 </body>
 </html>
